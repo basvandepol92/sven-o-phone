@@ -107,6 +107,7 @@
 .game-card {
   position: relative;
   min-height: 160px;
+  padding-top: 12px;
 }
 
 .game-card__lock {
@@ -122,6 +123,8 @@
   align-items: center;
   gap: 0.35rem;
   box-shadow: 0 10px 20px rgba(160, 62, 87, 0.2);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .lock__icon {
@@ -130,6 +133,7 @@
 }
 
 .game-button {
+  position: relative;
   width: 100%;
   height: 100%;
   border: none;
