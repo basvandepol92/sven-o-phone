@@ -42,17 +42,18 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   private lastFrame = 0;
   private svenY = 0;
   private svenVelocity = 0;
-  private gravity = 0.35;
-  private jumpStrength = -6.5;
+  private gravity = 0.28;
+  private jumpStrength = -7.2;
   private svenX = 90;
   private svenRadius = 18;
   private obstacles: Obstacle[] = [];
-  private obstacleSpeed = 2.6;
-  private obstacleInterval = 1800; // ms
+  private obstacleSpeed = 2.1;
+  private obstacleInterval = 2200; // ms
   private lastObstacleAt = 0;
   private canvasWidth = 600;
   private canvasHeight = 420;
   private destroyed = false;
+  private spawnGlow = false;
 
   constructor(
     private readonly router: Router,
@@ -126,6 +127,8 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
     this.svenVelocity = 0;
     this.obstacles = [];
     this.lastObstacleAt = performance.now();
+    this.spawnGlow = true;
+    window.setTimeout(() => (this.spawnGlow = false), 1600);
   }
 
   private startGameLoop(): void {
@@ -162,8 +165,9 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Spawn obstacles at interval
-    if (this.obstacles.length === 0 || performance.now() - this.lastObstacleAt > this.obstacleInterval) {
+    // Spawn obstacles at interval with slight speed ramp-up for later points.
+    const interval = Math.max(1400, this.obstacleInterval - this.currentScore * 40);
+    if (this.obstacles.length === 0 || performance.now() - this.lastObstacleAt > interval) {
       this.spawnObstacle();
       this.lastObstacleAt = performance.now();
     }
@@ -174,7 +178,8 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
 
     // Move obstacles and handle scoring
     this.obstacles.forEach((obs) => {
-      obs.x -= this.obstacleSpeed;
+      const speed = this.obstacleSpeed + Math.min(this.currentScore * 0.07, 1.2);
+      obs.x -= speed;
       const passX = obs.x + obs.width;
       if (!obs.scored && passX < this.svenX - this.svenRadius) {
         obs.scored = true;
@@ -232,6 +237,18 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
     ctx.fill();
     ctx.closePath();
 
+    // Spawn glow to show initial position clearly.
+    if (this.spawnGlow) {
+      const glow = ctx.createRadialGradient(this.svenX, this.svenY, 5, this.svenX, this.svenY, 40);
+      glow.addColorStop(0, 'rgba(142, 240, 195, 0.45)');
+      glow.addColorStop(1, 'rgba(142, 240, 195, 0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(this.svenX, this.svenY, 38, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.closePath();
+    }
+
     // Eyes
     ctx.fillStyle = '#0f3e6a';
     ctx.beginPath();
@@ -250,7 +267,7 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   }
 
   private spawnObstacle(): void {
-    const gapHeight = 150;
+    const gapHeight = 180;
     const minGapY = 80;
     const maxGapY = this.canvasHeight - gapHeight - 80;
     const gapY = minGapY + Math.random() * (maxGapY - minGapY);

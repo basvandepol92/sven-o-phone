@@ -1,0 +1,57 @@
+<section class="svennetje">
+  <div class="svennetje__top game-ui">
+    <a class="back-btn" routerLink="/start" (click)="goBack()">Terug</a>
+    <div class="scoreboard">Punten: {{ correctCount }}/5</div>
+  </div>
+
+  <div class="svennetje__board">
+    <div class="cups">
+      <button
+        class="cup"
+        type="button"
+        *ngFor="let cup of cups; index as idx"
+        [style.left]="getSlotLeft(idx)"
+        [class.cup--shuffling]="isShuffling"
+        [class.cup--active]="canChoose"
+        (click)="handleCupSelection(idx)"
+      >
+        <span class="cup__lid"></span>
+        <span class="cup__body"></span>
+        <span class="cup__shadow"></span>
+        <span class="cup__peek" *ngIf="isSvenUnderCup(idx)">🍼</span>
+      </button>
+    </div>
+
+    <!-- Intro popup -->
+    <div class="overlay" *ngIf="showIntro">
+      <div class="dialog">
+        <p>
+          Pas op, Sven verstopt zich. Klik het juiste bekertje aan waar Sven zich verstopt heeft. Wanneer je het 5x goed gedaan hebt
+          mag je een cadeautje uitpakken.
+        </p>
+        <button class="btn btn--primary" type="button" (click)="startFromIntro()">Start</button>
+      </div>
+    </div>
+
+    <!-- Failure popup -->
+    <div class="overlay" *ngIf="showFailure">
+      <div class="dialog">
+        <h2>Helaas</h2>
+        <p>Je had {{ correctCount }}/5 goed</p>
+        <div class="dialog__actions">
+          <button class="btn btn--primary" type="button" (click)="tryAgain()">probeer opnieuw</button>
+          <button class="btn btn--ghost" type="button" (click)="goBack()">ga terug</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success popup -->
+    <div class="overlay" *ngIf="showSuccess">
+      <div class="dialog">
+        <h2>Gefeliciteerd je krijgt een cadeautje</h2>
+        <p>Score: 5/5</p>
+        <button class="btn btn--primary" type="button" (click)="goBack()">ga terug naar home</button>
+      </div>
+    </div>
+  </div>
+</section>
