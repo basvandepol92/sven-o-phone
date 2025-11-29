@@ -1,0 +1,39 @@
+<section class="kruipt">
+  <div class="kruipt__top game-ui">
+    <a class="back-btn" routerLink="/start" (click)="goBack()">Terug</a>
+    <div class="scoreboard">
+      <span>Punten: {{ currentScore }}</span>
+      <span>Highscore: {{ highScore }}</span>
+    </div>
+  </div>
+
+  <div class="kruipt__canvas-wrap">
+    <canvas #gameCanvas></canvas>
+
+    <!-- Instruction popup shown before first start -->
+    <div class="overlay" *ngIf="showIntro">
+      <div class="dialog">
+        <p>
+          Help Sven leert kruipen, help hem door het huis bewegen. Wanneer je minstens {{targetScore}} punten hebt behaald unlock je het volgende spel
+        </p>
+        <button class="btn btn--primary" type="button" (click)="startFromIntro()">Start</button>
+      </div>
+    </div>
+
+    <!-- Game over popup -->
+    <div class="overlay" *ngIf="showGameOver">
+      <div class="dialog">
+        <h2 *ngIf="currentScore < targetScore">Helaas</h2>
+        <h2 *ngIf="currentScore >= targetScore">Gefeliciteerd je hebt een cadeautje verdient</h2>
+        <p>Je score: {{ currentScore }}</p>
+
+        <div class="dialog__actions">
+          <button class="btn btn--primary" type="button" (click)="restartGame()">probeer opnieuw</button>
+          <button class="btn btn--ghost" type="button" (click)="goBack()">
+            {{ currentScore >= targetScore ? 'ga naar start' : 'ga terug' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
