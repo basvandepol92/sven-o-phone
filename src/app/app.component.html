@@ -1,0 +1,30 @@
+<div class="app-shell">
+  <div class="monitor">
+    <div class="monitor__frame">
+      <header class="monitor__header">
+        <div class="monitor__badge">
+          <span class="monitor__logo-circle"></span>
+          <div class="monitor__brand">Sven-o-phone</div>
+        </div>
+        <div class="monitor__signal">
+          <span class="signal-bar"></span>
+          <span class="signal-bar"></span>
+          <span class="signal-bar"></span>
+        </div>
+      </header>
+
+      <main class="monitor__display">
+        <router-outlet></router-outlet>
+      </main>
+
+      <footer class="monitor__footer">
+        <div class="monitor__speaker" [class.monitor__speaker--pulse]="speakerPulse">
+          <div class="monitor__speaker-bars" *ngIf="speakerPulse">
+            <span class="eq-bar" *ngFor="let bar of eqBars" [style.--i]="bar" [class.eq-bar--active]="speakerPulse"></span>
+          </div>
+        </div>
+        <button class="monitor__chip" type="button" (click)="triggerPulse()">Live meeluisteren</button>
+      </footer>
+    </div>
+  </div>
+</div>

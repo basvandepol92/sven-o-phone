@@ -1,0 +1,45 @@
+<section class="start">
+  <div class="start__top">
+    <div class="start__left">
+      <a class="back-btn" routerLink="/">← Terug</a>
+    </div>
+
+       <div class="sleep">
+        <span class="sleep__dot"></span>
+        <div class="sleep__text">
+          <span class="sleep__label">Slaap status</span>
+          <span class="sleep__state">Rustig</span>
+        </div>
+      </div>
+  </div>
+
+  <div class="start__grid">
+    <div class="game-card" *ngFor="let game of games">
+      <div class="game-card__lock" *ngIf="!isUnlocked(game.id)">
+        <svg class="lock__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M17 10h-1V7a4 4 0 0 0-8 0v3H7a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1Zm-3 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm-6-7h8V7a2 2 0 1 0-4 0v2a1 1 0 1 1-2 0V7a2 2 0 1 0-4 0Z"
+            fill="currentColor"
+          ></path>
+        </svg>
+        <span>Gesloten</span>
+      </div>
+
+      <button
+        class="game-button"
+        type="button"
+        [class.game-button--locked]="!isUnlocked(game.id)"
+        [class.game-button--completed]="isCompleted(game.id)"
+        [disabled]="!isUnlocked(game.id)"
+        (click)="openGame(game)"
+      >
+        <div class="game-button__title">{{ game.title }}</div>
+        <div class="game-button__status">
+          <span *ngIf="isCompleted(game.id)">Behaald 🎁</span>
+          <span *ngIf="!isCompleted(game.id) && isUnlocked(game.id)">Klaar om te spelen</span>
+          <span *ngIf="!isUnlocked(game.id)">Ontgrendel door vorig spel</span>
+        </div>
+      </button>
+    </div>
+  </div>
+</section>

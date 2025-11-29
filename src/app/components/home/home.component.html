@@ -1,0 +1,18 @@
+<section class="home">
+  <div class="home__logo">
+    <div class="logo-mark">S</div>
+    <div class="logo-text">
+      <div class="logo-name">Sven-o-phone</div>
+      <div class="logo-sub">Baby monitor avontuur</div>
+    </div>
+  </div>
+
+  <p class="home__tagline">Speel en verdien cadeautjes terwijl Svenneke slaapt.</p>
+
+  <div class="home__actions">
+    <a class="btn btn--primary" routerLink="/start">Start</a>
+    <button class="btn btn--ghost" type="button" (click)="openInstructions()">Instructies</button>
+  </div>
+</section>
+
+<app-instructions-dialog [open]="instructionsOpen" (close)="closeInstructions()"></app-instructions-dialog>

@@ -1,0 +1,57 @@
+.placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.placeholder__card {
+  background: #f4fbff;
+  border: 1px solid #cfe4f7;
+  padding: 1.25rem;
+  border-radius: 18px;
+  max-width: 460px;
+  box-shadow: 0 14px 26px rgba(17, 68, 110, 0.16);
+}
+
+.placeholder h2 {
+  margin-top: 0;
+  color: #1c4f85;
+}
+
+.placeholder p {
+  color: #2b5e98;
+  line-height: 1.5;
+}
+
+.hint {
+  font-size: 0.95rem;
+  color: #417fb7;
+}
+
+.status {
+  margin: 0.75rem 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  background: #e7f7ef;
+  color: #0f5132;
+  font-weight: 700;
+}
+
+.status--locked {
+  background: #f8e1e8;
+  color: #a03e57;
+}
+
+.placeholder__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.placeholder--empty {
+  display: grid;
+  gap: 0.75rem;
+}
