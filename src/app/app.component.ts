@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SoundtrackService } from './services/soundtrack.service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent implements OnDestroy {
   private pulseTimeout?: number;
   private audioStopTimeout?: number;
   private snoreAudio = new Audio('assets/music/snore.mp3');
+  constructor(public readonly soundtrack: SoundtrackService) {}
 
   triggerPulse(): void {
     this.speakerPulse = false;
@@ -33,6 +35,14 @@ export class AppComponent implements OnDestroy {
     window.clearTimeout(this.pulseTimeout);
     window.clearTimeout(this.audioStopTimeout);
     this.stopSnoreSound();
+  }
+
+  toggleMusic(): void {
+    this.soundtrack.togglePlayPause();
+  }
+
+  musicIcon(): string {
+    return this.soundtrack.isPlaying() ? '⏸' : '▶';
   }
 
   private playSnoreSound(): void {
