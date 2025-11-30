@@ -54,12 +54,20 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   private canvasHeight = 420;
   private destroyed = false;
   private spawnGlow = false;
+  private svenImg: HTMLImageElement;
+  private svenImgLoaded = false;
 
   constructor(
     private readonly router: Router,
     private readonly gameState: GameStateService,
     private readonly host: ElementRef<HTMLElement>
-  ) {}
+  ) {
+    this.svenImg = new Image();
+    this.svenImg.src = 'assets/images/logo_sven.png';
+    this.svenImg.onload = () => {
+      this.svenImgLoaded = true;
+    };
+  }
 
   ngAfterViewInit(): void {
     this.loadHighScore();
@@ -230,12 +238,20 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
       ctx.fillRect(obs.x, obs.gapY + obs.gapHeight, obs.width, this.canvasHeight - (obs.gapY + obs.gapHeight));
     });
 
-    // Sven (simple circle avatar)
-    ctx.beginPath();
-    ctx.fillStyle = '#ffcf92';
-    ctx.arc(this.svenX, this.svenY, this.svenRadius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
+    // Sven avatar image (preloaded)
+    ctx.save();
+    ctx.translate(this.svenX, this.svenY);
+    if (this.svenImgLoaded) {
+      ctx.drawImage(this.svenImg, -this.svenRadius, -this.svenRadius, this.svenRadius * 2, this.svenRadius * 2);
+    } else {
+      // Simple fallback until the image is ready.
+      ctx.beginPath();
+      ctx.fillStyle = '#ffcf92';
+      ctx.arc(0, 0, this.svenRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.closePath();
+    }
+    ctx.restore();
 
     // Spawn glow to show initial position clearly.
     if (this.spawnGlow) {
@@ -249,21 +265,6 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
       ctx.closePath();
     }
 
-    // Eyes
-    ctx.fillStyle = '#0f3e6a';
-    ctx.beginPath();
-    ctx.arc(this.svenX - 6, this.svenY - 4, 3, 0, Math.PI * 2);
-    ctx.arc(this.svenX + 6, this.svenY - 4, 3, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
-
-    // Smile
-    ctx.strokeStyle = '#0f3e6a';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(this.svenX, this.svenY + 4, 8, 0, Math.PI, false);
-    ctx.stroke();
-    ctx.closePath();
   }
 
   private spawnObstacle(): void {

@@ -24,6 +24,9 @@
         </svg>
         <span>Gesloten</span>
       </div>
+      <div class="game-card__badge game-card__badge--completed" *ngIf="isCompleted(game.id)">
+        Behaald 🎁
+      </div>
 
       <button
         class="game-button"
@@ -32,14 +35,12 @@
         [class.game-button--completed]="isCompleted(game.id)"
         [disabled]="!isUnlocked(game.id)"
         (click)="openGame(game)"
+        [attr.data-logo]="logoFor(game.id) ? true : null"
+        [style.--game-logo]="logoFor(game.id) ? 'url(' + logoFor(game.id) + ')' : null"
+        [style.--game-color]="colorFor(game.id) || null"
       >
-        <div class="game-button__title">{{ game.title }}</div>
-        <div class="game-button__status">
-          <span *ngIf="isCompleted(game.id)">Behaald 🎁</span>
-          <span *ngIf="!isCompleted(game.id) && isUnlocked(game.id)">Klaar om te spelen</span>
-          <span *ngIf="!isUnlocked(game.id)">Ontgrendel door vorig spel</span>
-        </div>
       </button>
+      <div class="game-label">{{ game.title }}</div>
     </div>
   </div>
 </section>

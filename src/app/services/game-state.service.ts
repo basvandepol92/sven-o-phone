@@ -7,9 +7,9 @@ export interface MiniGame {
 }
 
 const MINI_GAMES: MiniGame[] = [
-  { id: 1, title: 'Spel 1', route: '/game/1' },
-  { id: 2, title: 'Spel 2', route: '/game/2' },
-  { id: 3, title: 'Spel 3', route: '/game/3' }
+  { id: 1, title: 'Svennie kruipt', route: '/game/1' },
+  { id: 2, title: 'Svenneke svenneke', route: '/game/2' },
+  { id: 3, title: 'Hoe goed ken jij Sven?', route: '/game/3' }
 ];
 
 const STORAGE_KEY = 'svenophone-progress';

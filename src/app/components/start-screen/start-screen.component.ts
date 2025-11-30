@@ -12,6 +12,16 @@ import { GameStateService, MiniGame } from '../../services/game-state.service';
 })
 export class StartScreenComponent {
   games = this.gameState.miniGames;
+  gameLogos: Record<number, string> = {
+    1: 'assets/images/logo_minigame_1.png',
+    2: 'assets/images/logo_minigame_2.png',
+    3: 'assets/images/logo_minigame_3.png'
+  };
+  gameColors: Record<number, string> = {
+    1: 'linear-gradient(145deg, #fff4d6, #ffd598)',
+    2: 'linear-gradient(145deg, #e8f2ff, #c8d7ff)',
+    3: 'linear-gradient(145deg, #e8fff3, #c6f4dd)'
+  };
 
   constructor(private readonly gameState: GameStateService, private readonly router: Router) {}
 
@@ -30,5 +40,13 @@ export class StartScreenComponent {
 
     // Placeholder navigation; real mini-games can hook into these routes later.
     this.router.navigateByUrl(game.route);
+  }
+
+  logoFor(gameId: number): string | undefined {
+    return this.gameLogos[gameId];
+  }
+
+  colorFor(gameId: number): string | undefined {
+    return this.gameColors[gameId];
   }
 }

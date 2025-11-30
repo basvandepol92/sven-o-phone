@@ -98,6 +98,17 @@
   font-size: 1.4rem;
 }
 
+.cup__peek-img {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(21, 86, 142, 0.16));
+}
+
 .overlay {
   position: absolute;
   inset: 0;
