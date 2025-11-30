@@ -6,10 +6,10 @@
           <img src="assets/images/logo_sven.png" alt="Sven-o-phone logo" class="monitor__logo-img" />
           <div class="monitor__brand">Sven-o-phone</div>
         </div>
-        <div class="monitor__signal">
-          <span class="signal-bar"></span>
-          <span class="signal-bar"></span>
-          <span class="signal-bar"></span>
+        <div class="monitor__signal" [attr.data-strength]="signalBars">
+          <span class="signal-bar" [class.active]="signalBars >= 1"></span>
+          <span class="signal-bar" [class.active]="signalBars >= 2"></span>
+          <span class="signal-bar" [class.active]="signalBars >= 3"></span>
         </div>
       </header>
 

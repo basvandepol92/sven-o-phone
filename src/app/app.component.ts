@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SoundtrackService } from './services/soundtrack.service';
@@ -15,10 +15,17 @@ export class AppComponent implements OnDestroy {
   eqBars = Array.from({ length: 30 }, (_, i) => i);
   speakerPulse = false;
   showLiveVideo = false;
+  signalBars = 3;
   private pulseTimeout?: number;
   private audioStopTimeout?: number;
   private snoreAudio = new Audio('assets/music/snore.mp3');
+  private signalIntervalId?: number;
   constructor(public readonly soundtrack: SoundtrackService) {}
+
+  ngOnInit(): void {
+    this.rotateSignal();
+    this.signalIntervalId = window.setInterval(() => this.rotateSignal(), 30000);
+  }
 
   triggerPulse(): void {
     this.speakerPulse = false;
@@ -37,6 +44,9 @@ export class AppComponent implements OnDestroy {
     window.clearTimeout(this.pulseTimeout);
     window.clearTimeout(this.audioStopTimeout);
     this.stopSnoreSound();
+    if (this.signalIntervalId) {
+      window.clearInterval(this.signalIntervalId);
+    }
   }
 
   toggleMusic(): void {
@@ -54,6 +64,10 @@ export class AppComponent implements OnDestroy {
   closeLiveVideo(): void {
     this.showLiveVideo = false;
     this.liveVideoRef?.nativeElement.pause();
+  }
+
+  private rotateSignal(): void {
+    this.signalBars = Math.floor(Math.random() * 3) + 1;
   }
 
   private playSnoreSound(): void {
