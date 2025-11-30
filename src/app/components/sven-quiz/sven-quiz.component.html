@@ -1,0 +1,78 @@
+<section class="quiz">
+  <div class="quiz__top game-ui">
+    <a class="back-btn" routerLink="/start" (click)="goBack()">Terug</a>
+    <div class="status">
+      <div class="lives">
+        <span class="life" *ngFor="let life of [1,2,3]; let i = index" [class.life--lost]="i >= lives">🍼</span>
+      </div>
+      <span class="progress">{{ progressLabel }}</span>
+      <span class="timer">Tijd: {{ timeLeft }}s</span>
+    </div>
+  </div>
+
+  <div class="quiz__card">
+    <h2>{{ currentQuestion.question }}</h2>
+
+    <div class="timer-bar">
+      <div class="timer-bar__fill" [style.width.%]="(timeLeft / 10) * 100"></div>
+    </div>
+
+    <div class="answers">
+      <button
+        class="answer"
+        type="button"
+        *ngFor="let answer of currentQuestion.answers; index as idx"
+        (click)="handleAnswerSelection(idx)"
+        [disabled]="!canAnswer"
+      >
+        {{ answer }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Intro popup -->
+  <div class="overlay" *ngIf="showIntro">
+    <div class="dialog">
+      <h2 class="dialog__title">Hoe goed ken jij Sven?</h2>
+      <p>
+        Welkom bij 'Hoe goed ken jij Sven?'. Je krijgt 10 vragen over Sven. Bij elke vraag heb je 10 seconden om te antwoorden. Je
+        hebt 3 levens; elk fout antwoord of geen antwoord kost je een leven. Beantwoord alle vragen goed om een cadeautje te verdienen.
+      </p>
+      <button class="btn btn--primary" type="button" (click)="startGame()">Start</button>
+    </div>
+  </div>
+
+  <!-- Failure popup -->
+  <div class="overlay" *ngIf="showFailure">
+    <div class="dialog">
+      <h2>Helaas</h2>
+      <p>Je haalde vraag {{ currentQuestionIndex + 1 }} van 10</p>
+      <div class="dialog__actions">
+        <button class="btn btn--primary" type="button" (click)="tryAgain()">probeer opnieuw</button>
+        <button class="btn btn--ghost" type="button" (click)="goBack()">ga terug</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success popup -->
+  <div class="overlay" *ngIf="showSuccess">
+    <div class="dialog">
+      <h2>Gefeliciteerd je krijgt een cadeautje</h2>
+      <p>Alle 10 vragen goed!</p>
+      <button class="btn btn--primary" type="button" (click)="goBack()">ga terug naar home</button>
+    </div>
+  </div>
+
+  <!-- Feedback between rounds -->
+  <div class="overlay" *ngIf="showFeedback">
+    <div class="dialog">
+      <h2>{{ feedbackTitle }}</h2>
+      <p>
+        Vraag {{ currentQuestionIndex + 1 }} van 10 -
+        <span *ngIf="lastAnswerCorrect">Goed beantwoord!</span>
+        <span *ngIf="!lastAnswerCorrect">Volgende keer beter.</span>
+      </p>
+      <button class="btn btn--primary" type="button" (click)="proceedAfterFeedback()">Volgende vraag</button>
+    </div>
+  </div>
+</section>
