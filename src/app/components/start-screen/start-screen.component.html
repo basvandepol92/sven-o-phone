@@ -14,6 +14,7 @@
   </div>
 
   <div class="start__grid">
+    <h2 class="start__header">Kies, speel en verdien!</h2>
     <div class="game-card" *ngFor="let game of games">
       <div class="game-card__lock" *ngIf="!isUnlocked(game.id)">
         <svg class="lock__icon" viewBox="0 0 24 24" aria-hidden="true">
