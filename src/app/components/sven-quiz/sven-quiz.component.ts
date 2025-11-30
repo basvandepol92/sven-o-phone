@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GameStateService } from '../../services/game-state.service';
@@ -82,6 +82,9 @@ const QUIZ_QUESTIONS: QuizQuestion[] = [
   styleUrls: ['./sven-quiz.component.scss']
 })
 export class SvenQuizComponent implements OnInit, OnDestroy {
+  private readonly router = inject(Router);
+  private readonly gameState = inject(GameStateService);
+  private readonly configService = inject(GameConfigService);
   questions = QUIZ_QUESTIONS;
   currentQuestionIndex = 0;
   lives = 3;
@@ -96,12 +99,6 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
   lastAnswerCorrect = false;
   requiredCorrectAnswers = 0;
   secondsPerQuestion = 0;
-
-  constructor(
-    private readonly router: Router,
-    private readonly gameState: GameStateService,
-    private readonly configService: GameConfigService
-  ) {}
 
   ngOnInit(): void {
     this.applyConfig();

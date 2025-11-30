@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, OnDestroy, ElementRef, ViewChild, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SoundtrackService } from './services/soundtrack.service';
@@ -10,7 +10,7 @@ import { SoundtrackService } from './services/soundtrack.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('liveVideo') liveVideoRef?: ElementRef<HTMLVideoElement>;
   eqBars = Array.from({ length: 30 }, (_, i) => i);
   speakerPulse = false;
@@ -20,7 +20,7 @@ export class AppComponent implements OnDestroy {
   private audioStopTimeout?: number;
   private snoreAudio = new Audio('assets/music/snore.mp3');
   private signalIntervalId?: number;
-  constructor(public readonly soundtrack: SoundtrackService) {}
+  readonly soundtrack = inject(SoundtrackService);
 
   ngOnInit(): void {
     this.rotateSignal();

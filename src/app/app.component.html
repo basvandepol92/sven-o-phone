@@ -19,9 +19,13 @@
 
       <footer class="monitor__footer">
         <div class="monitor__speaker" [class.monitor__speaker--pulse]="speakerPulse">
-          <div class="monitor__speaker-bars" *ngIf="speakerPulse">
-            <span class="eq-bar" *ngFor="let bar of eqBars" [style.--i]="bar" [class.eq-bar--active]="speakerPulse"></span>
-          </div>
+          @if (speakerPulse) {
+            <div class="monitor__speaker-bars">
+              @for (bar of eqBars; track bar) {
+                <span class="eq-bar" [style.--i]="bar" [class.eq-bar--active]="speakerPulse"></span>
+              }
+            </div>
+          }
         </div>
         <div class="footer-buttons">
           <button class="monitor__chip" type="button" (click)="triggerPulse()">Live meeluisteren</button>
@@ -40,17 +44,19 @@
   </div>
 </div>
 
-<div class="overlay" *ngIf="showLiveVideo">
-  <div class="dialog dialog--video">
-    <h3>Live meekijken met Sven</h3>
-    <video
-      #liveVideo
-      src="assets/video/video.mp4"
-      controls
-      autoplay
-      muted
-      class="live-video"
-    ></video>
-    <button class="btn btn--primary" type="button" (click)="closeLiveVideo()">Sluiten</button>
+@if (showLiveVideo) {
+  <div class="overlay">
+    <div class="dialog dialog--video">
+      <h3>Live meekijken met Sven</h3>
+      <video
+        #liveVideo
+        src="assets/video/video.mp4"
+        controls
+        autoplay
+        muted
+        class="live-video"
+      ></video>
+      <button class="btn btn--primary" type="button" (click)="closeLiveVideo()">Sluiten</button>
+    </div>
   </div>
-</div>
+}

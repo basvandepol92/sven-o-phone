@@ -11,30 +11,37 @@
     <canvas #gameCanvas></canvas>
 
     <!-- Instruction popup shown before first start -->
-    <div class="overlay" *ngIf="showIntro">
-      <div class="dialog">
-        <h2 class="dialog__title">Svennie kruipt</h2>
-        <p>
-          Help Sven leert kruipen, help hem door het huis bewegen. Wanneer je minstens {{targetScore}} punten hebt behaald unlock je het volgende spel. Tik op het scherm om Sven de obstakels te laten ontwijken.
-        </p>
-        <button class="btn btn--primary" type="button" (click)="startFromIntro()">Start</button>
-      </div>
-    </div>
-
-    <!-- Game over popup -->
-    <div class="overlay" *ngIf="showGameOver">
-      <div class="dialog">
-        <h2 *ngIf="currentScore < targetScore">Helaas</h2>
-        <h2 *ngIf="currentScore >= targetScore">Gefeliciteerd je hebt een cadeautje verdient</h2>
-        <p>Je score: {{ currentScore }}</p>
-
-        <div class="dialog__actions">
-          <button class="btn btn--primary" type="button" (click)="restartGame()">probeer opnieuw</button>
-          <button class="btn btn--ghost" type="button" (click)="goBack()">
-            {{ currentScore >= targetScore ? 'ga naar start' : 'ga terug' }}
-          </button>
+    @if (showIntro) {
+      <div class="overlay">
+        <div class="dialog">
+          <h2 class="dialog__title">Svennie kruipt</h2>
+          <p>
+            Help Sven leert kruipen, help hem door het huis bewegen. Wanneer je minstens {{targetScore}} punten hebt behaald unlock je het volgende spel. Tik op het scherm om Sven de obstakels te laten ontwijken.
+          </p>
+          <button class="btn btn--primary" type="button" (click)="startFromIntro()">Start</button>
         </div>
       </div>
-    </div>
+    }
+
+    <!-- Game over popup -->
+    @if (showGameOver) {
+      <div class="overlay">
+        <div class="dialog">
+          @if (currentScore < targetScore) {
+            <h2>Helaas</h2>
+          } @else {
+            <h2>Gefeliciteerd je hebt een cadeautje verdient</h2>
+          }
+          <p>Je score: {{ currentScore }}</p>
+
+          <div class="dialog__actions">
+            <button class="btn btn--primary" type="button" (click)="restartGame()">probeer opnieuw</button>
+            <button class="btn btn--ghost" type="button" (click)="goBack()">
+              {{ currentScore >= targetScore ? 'ga naar start' : 'ga terug' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
   </div>
 </section>
