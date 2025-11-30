@@ -32,7 +32,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/**    # pakt automatisch jouw projectmap
+          path: dist/sven-o-phone    # pakt automatisch jouw projectmap
 
   deploy:
     needs: build
