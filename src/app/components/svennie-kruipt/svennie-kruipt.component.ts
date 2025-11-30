@@ -17,6 +17,7 @@ interface Obstacle {
   gapY: number;
   gapHeight: number;
   scored?: boolean;
+  type: 'bottomOnly' | 'topOnly' | 'fullGap';
 }
 
 const HIGH_SCORE_KEY = 'svennieKruiptHighScore';
@@ -57,6 +58,7 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   private spawnGlow = false;
   private svenImg: HTMLImageElement;
   private svenImgLoaded = false;
+  private obstacleCount = 0;
 
   constructor(
     private readonly router: Router,
@@ -141,6 +143,7 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
     this.lastObstacleAt = performance.now();
     this.spawnGlow = true;
     window.setTimeout(() => (this.spawnGlow = false), 1600);
+    this.obstacleCount = 0;
   }
 
   private startGameLoop(): void {
@@ -238,8 +241,14 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
     // Obstacles
     ctx.fillStyle = '#8ec5ff';
     this.obstacles.forEach((obs) => {
-      ctx.fillRect(obs.x, 0, obs.width, obs.gapY);
-      ctx.fillRect(obs.x, obs.gapY + obs.gapHeight, obs.width, this.canvasHeight - (obs.gapY + obs.gapHeight));
+      if (obs.type === 'bottomOnly') {
+        ctx.fillRect(obs.x, this.canvasHeight - obs.gapHeight, obs.width, obs.gapHeight);
+      } else if (obs.type === 'topOnly') {
+        ctx.fillRect(obs.x, 0, obs.width, obs.gapHeight);
+      } else {
+        ctx.fillRect(obs.x, 0, obs.width, obs.gapY);
+        ctx.fillRect(obs.x, obs.gapY + obs.gapHeight, obs.width, this.canvasHeight - (obs.gapY + obs.gapHeight));
+      }
     });
 
     // Sven avatar image (preloaded)
@@ -272,15 +281,30 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   }
 
   private spawnObstacle(): void {
+    this.obstacleCount += 1;
     const gapHeight = 180;
-    const minGapY = 80;
-    const maxGapY = this.canvasHeight - gapHeight - 80;
-    const gapY = minGapY + Math.random() * (maxGapY - minGapY);
+
+    // Early obstacles: only bottom, then only top, then full gaps.
+    let type: Obstacle['type'] = 'fullGap';
+    if (this.obstacleCount <= 3) {
+      type = 'bottomOnly';
+    } else if (this.obstacleCount <= 6) {
+      type = 'topOnly';
+    }
+
+    let gapY = 0;
+    if (type === 'fullGap') {
+      const minGapY = 80;
+      const maxGapY = this.canvasHeight - gapHeight - 80;
+      gapY = minGapY + Math.random() * (maxGapY - minGapY);
+    }
+
     this.obstacles.push({
       x: this.canvasWidth + 40,
       width: 60,
       gapY,
-      gapHeight
+      gapHeight,
+      type
     });
   }
 
@@ -289,6 +313,12 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
       const withinX = this.svenX + this.svenRadius > obs.x && this.svenX - this.svenRadius < obs.x + obs.width;
       if (!withinX) {
         return false;
+      }
+      if (obs.type === 'bottomOnly') {
+        return this.svenY + this.svenRadius > this.canvasHeight - obs.gapHeight;
+      }
+      if (obs.type === 'topOnly') {
+        return this.svenY - this.svenRadius < obs.gapHeight;
       }
       const hitsTop = this.svenY - this.svenRadius < obs.gapY;
       const hitsBottom = this.svenY + this.svenRadius > obs.gapY + obs.gapHeight;
