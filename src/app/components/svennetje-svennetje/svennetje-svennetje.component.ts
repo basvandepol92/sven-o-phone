@@ -2,6 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GameStateService } from '../../services/game-state.service';
+import { GameConfigService } from '../../services/game-config.service';
 
 interface Cup {
   id: number;
@@ -34,6 +35,7 @@ export class SvennetjeSvennetjeComponent implements OnInit, OnDestroy {
   showSuccess = false;
   revealedCup: number | null = null;
   chosenCup: number | null = null;
+  requiredTarget = 5;
 
   private shuffleTimers: number[] = [];
   private revealTimer?: number;
@@ -42,10 +44,12 @@ export class SvennetjeSvennetjeComponent implements OnInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly host: ElementRef<HTMLElement>,
-    private readonly gameState: GameStateService
+    private readonly gameState: GameStateService,
+    private readonly configService: GameConfigService
   ) {}
 
   ngOnInit(): void {
+    this.refreshConfig();
     this.setupCups(3);
   }
 
@@ -128,7 +132,7 @@ export class SvennetjeSvennetjeComponent implements OnInit, OnDestroy {
 
   handleSuccess(): void {
     this.correctCount += 1;
-    if (this.correctCount >= 5) {
+    if (this.correctCount >= this.requiredTarget) {
       this.handleGameWin();
       return;
     }
@@ -214,5 +218,10 @@ export class SvennetjeSvennetjeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clearTimers();
+  }
+
+  private refreshConfig(): void {
+    const cfg = this.configService.getConfig();
+    this.requiredTarget = Math.max(1, cfg.svennetjeSvennetje.requiredCorrectCount);
   }
 }

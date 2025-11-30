@@ -13,6 +13,7 @@ const MINI_GAMES: MiniGame[] = [
 ];
 
 const STORAGE_KEY = 'svenophone-progress';
+const HIGH_SCORE_KEY = 'svennieKruiptHighScore';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,25 @@ export class GameStateService {
 
     this.completed.add(gameId);
     this.saveState();
+  }
+
+  setCompletedList(gameIds: number[]): void {
+    this.completed = new Set(gameIds ?? []);
+    this.saveState();
+  }
+
+  getCompletedIds(): number[] {
+    return Array.from(this.completed);
+  }
+
+  resetProgress(): void {
+    this.completed.clear();
+    // Persist cleared progress
+    this.saveState();
+    // Clear highscore or other per-game stored data.
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(HIGH_SCORE_KEY);
+    }
   }
 
   private saveState(): void {
