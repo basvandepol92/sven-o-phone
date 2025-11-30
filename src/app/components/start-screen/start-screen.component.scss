@@ -32,14 +32,6 @@
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-.back-btn:hover {
-  transform: translateY(-1px);
-}
-
-.back-btn:active {
-  transform: translateY(0);
-}
-
 .sleep {
   display: inline-flex;
   align-items: center;
@@ -71,32 +63,6 @@
   opacity: 0.8;
 }
 
-.mini-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.75rem;
-  border-radius: 12px;
-  background: #eaf3ff;
-  border: 1px solid #cfe1f7;
-}
-
-.mini-logo__circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: linear-gradient(145deg, #b4e0ff, #8cc7ff);
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  color: #0f3e6a;
-}
-
-.mini-logo__text {
-  font-weight: 700;
-  color: #1c4f85;
-}
-
 .start__grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -112,7 +78,6 @@
   font-size: 1.5rem;
   font-weight: 900;
   color: #0f3e6a;
-  letter-spacing: 0.4px;
   text-align: center;
 }
 
@@ -138,7 +103,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  box-shadow: 0 10px 20px rgba(160, 62, 87, 0.2);
   z-index: 2;
   pointer-events: none;
 }
@@ -153,7 +117,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  box-shadow: 0 10px 20px rgba(17, 110, 58, 0.18);
   z-index: 2;
   pointer-events: none;
   background: #d7f5e6;
@@ -173,11 +136,12 @@
   min-height: 180px;
   border: none;
   border-radius: 18px;
-  background-image: var(--game-logo, none),
-    var(--game-color, linear-gradient(160deg, #a8ddff, #75c3ff));
-  background-size: 100%, cover;
-  background-position: center center, center;
-  background-repeat: no-repeat, no-repeat;
+  --logo-layer: var(--game-logo, none);
+  --bg-layer: var(--game-color, linear-gradient(160deg, #a8ddff, #75c3ff));
+  background-image: var(--logo-layer), var(--bg-layer);
+  background-size: 100% 100%, cover;
+  background-position: center, center;
+  background-repeat: no-repeat;
   color: #0f3e6a;
   font-weight: 800;
   font-size: 1.2rem;
@@ -193,63 +157,31 @@
 }
 
 .game-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 24px rgba(21, 86, 142, 0.22);
-}
-
-.game-button:active {
-  transform: translateY(0);
 }
 
 .game-button:disabled,
 .game-button--locked {
   cursor: not-allowed;
-  background: linear-gradient(160deg, #d6e5f0, #c0d7ea);
-  color: #5c6d82;
   box-shadow: none;
   filter: grayscale(0.1);
-}
-
-.game-button[data-logo] {
-  background-image: var(--game-logo, none),
-    var(--game-color, linear-gradient(160deg, #a8ddff, #75c3ff));
-  background-size: 100%, cover;
-  background-position: center center, center;
-}
-
-.game-button--locked[data-logo] {
   background-image:
-    var(--game-logo, none),
+    var(--logo-layer),
     linear-gradient(160deg, rgba(214, 229, 240, 0.7), rgba(192, 215, 234, 0.7)),
-    var(--game-color, linear-gradient(160deg, #a8ddff, #75c3ff));
-  background-size: 100%, cover;
-  background-position: center center, center, center;
-  background-repeat: no-repeat, no-repeat, no-repeat;
+    var(--bg-layer);
+  background-size: 100% 100%, cover, cover;
+  background-position: center, center, center;
+  background-repeat: no-repeat;
   background-blend-mode: normal, multiply, normal;
+  color: #5c6d82;
 }
 
 .game-button--completed {
   background: linear-gradient(160deg, #b6f4d4, #7ed9a9);
-      background-repeat: no-repeat;
   color: #0f5132;
-}
-
-.game-label {
-  text-align: center;
-  font-weight: 800;
-  color: #1c4f85;
-  font-size: 1rem;
 }
 
 .game-button__title {
   font-size: 1.3rem;
-}
-
-.game-button__status {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: inherit;
-  opacity: 0.9;
 }
 
 @keyframes pulse {
@@ -270,27 +202,7 @@
     align-items: flex-start;
   }
 
-  .mini-logo {
-    align-self: flex-end;
-  }
-
   .start__grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  }
-}
-
-@media (orientation: landscape) and (min-width: 900px) {
-  .start__top {
-    align-items: center;
-  }
-
-  .start__grid {
-    grid-template-columns: repeat(3, minmax(160px, 1fr));
-    gap: 1rem;
-  }
-
-  .game-button {
-    padding: 1.6rem 1.25rem;
-    font-size: 1.25rem;
   }
 }
