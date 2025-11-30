@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SoundtrackService } from './services/soundtrack.service';
@@ -11,8 +11,10 @@ import { SoundtrackService } from './services/soundtrack.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnDestroy {
+  @ViewChild('liveVideo') liveVideoRef?: ElementRef<HTMLVideoElement>;
   eqBars = Array.from({ length: 30 }, (_, i) => i);
   speakerPulse = false;
+  showLiveVideo = false;
   private pulseTimeout?: number;
   private audioStopTimeout?: number;
   private snoreAudio = new Audio('assets/music/snore.mp3');
@@ -43,6 +45,15 @@ export class AppComponent implements OnDestroy {
 
   musicIcon(): string {
     return this.soundtrack.isPlaying() ? '⏸' : '▶';
+  }
+
+  openLiveVideo(): void {
+    this.showLiveVideo = true;
+  }
+
+  closeLiveVideo(): void {
+    this.showLiveVideo = false;
+    this.liveVideoRef?.nativeElement.pause();
   }
 
   private playSnoreSound(): void {

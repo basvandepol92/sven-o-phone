@@ -25,6 +25,7 @@
         </div>
         <div class="footer-buttons">
           <button class="monitor__chip" type="button" (click)="triggerPulse()">Live meeluisteren</button>
+          <button class="monitor__chip" type="button" (click)="openLiveVideo()">Live meekijken</button>
           <button
             class="monitor__chip"
             type="button"
@@ -36,5 +37,20 @@
         </div>
       </footer>
     </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="showLiveVideo">
+  <div class="dialog dialog--video">
+    <h3>Live meekijken met Sven</h3>
+    <video
+      #liveVideo
+      src="assets/video/video.mp4"
+      controls
+      autoplay
+      muted
+      class="live-video"
+    ></video>
+    <button class="btn btn--primary" type="button" (click)="closeLiveVideo()">Sluiten</button>
   </div>
 </div>
