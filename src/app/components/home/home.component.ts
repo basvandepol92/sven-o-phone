@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InstructionsDialogComponent } from '../instructions-dialog/instructions-dialog.component';
@@ -13,7 +13,8 @@ import { SoundtrackService } from '../../services/soundtrack.service';
 })
 export class HomeComponent {
   instructionsOpen = false;
-  constructor(private readonly router: Router, private readonly soundtrack: SoundtrackService) {}
+  private readonly router = inject(Router);
+  private readonly soundtrack = inject(SoundtrackService);
 
   openInstructions(): void {
     this.instructionsOpen = true;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GameStateService, MiniGame } from '../../services/game-state.service';
@@ -13,6 +13,9 @@ import { ConfiguratorDialogComponent } from '../configurator-dialog/configurator
   styleUrls: ['./start-screen.component.scss']
 })
 export class StartScreenComponent {
+  private readonly gameState = inject(GameStateService);
+  private readonly configService = inject(GameConfigService);
+  private readonly router = inject(Router);
   games = this.gameState.miniGames;
   gameLogos: Record<number, string> = {
     1: 'assets/images/logo_minigame_1.png',
@@ -29,12 +32,6 @@ export class StartScreenComponent {
   completedIds = this.gameState.getCompletedIds();
   private sleepClickCount = 0;
   private lastSleepClick = 0;
-
-  constructor(
-    private readonly gameState: GameStateService,
-    private readonly configService: GameConfigService,
-    private readonly router: Router
-  ) {}
 
   isUnlocked(gameId: number): boolean {
     return this.gameState.isGameUnlocked(gameId);

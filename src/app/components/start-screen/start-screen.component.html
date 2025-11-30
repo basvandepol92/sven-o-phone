@@ -4,53 +4,60 @@
       <a class="back-btn" routerLink="/">← Terug</a>
     </div>
 
-       <div class="sleep" (click)="handleSleepClick()">
-        <span class="sleep__dot"></span>
-        <div class="sleep__text">
-          <span class="sleep__label">Slaap status</span>
-          <span class="sleep__state">Rustig</span>
-        </div>
+    <button class="sleep" type="button" (click)="handleSleepClick()">
+      <span class="sleep__dot"></span>
+      <div class="sleep__text">
+        <span class="sleep__label">Slaap status</span>
+        <span class="sleep__state">Rustig</span>
       </div>
+    </button>
   </div>
 
   <div class="start__grid">
     <h2 class="start__header">Kies, speel en verdien!</h2>
-    <div class="game-card" *ngFor="let game of games">
-      <div class="game-card__lock" *ngIf="!isUnlocked(game.id)">
-        <svg class="lock__icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M17 10h-1V7a4 4 0 0 0-8 0v3H7a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1Zm-3 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm-6-7h8V7a2 2 0 1 0-4 0v2a1 1 0 1 1-2 0V7a2 2 0 1 0-4 0Z"
-            fill="currentColor"
-          ></path>
-        </svg>
-        <span>Gesloten</span>
-      </div>
-      <div class="game-card__badge game-card__badge--completed" *ngIf="isCompleted(game.id)">
-        Behaald 🎁
-      </div>
+    @for (game of games; track game.id) {
+      <div class="game-card">
+        @if (!isUnlocked(game.id)) {
+          <div class="game-card__lock">
+            <svg class="lock__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M17 10h-1V7a4 4 0 0 0-8 0v3H7a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1Zm-3 7a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm-6-7h8V7a2 2 0 1 0-4 0v2a1 1 0 1 1-2 0V7a2 2 0 1 0-4 0Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+            <span>Gesloten</span>
+          </div>
+        }
+        @if (isCompleted(game.id)) {
+          <div class="game-card__badge game-card__badge--completed">
+            Behaald 🎁
+          </div>
+        }
 
-      <button
-        class="game-button"
-        type="button"
-        [class.game-button--locked]="!isUnlocked(game.id)"
-        [class.game-button--completed]="isCompleted(game.id)"
-        [disabled]="!isUnlocked(game.id)"
-        (click)="openGame(game)"
-        [attr.data-logo]="logoFor(game.id) ? true : null"
-        [style.--game-logo]="logoFor(game.id) ? 'url(' + logoFor(game.id) + ')' : null"
-        [style.--game-color]="colorFor(game.id) || null"
-      >
-      </button>
-      <div class="game-label">{{ game.title }}</div>
-    </div>
+        <button
+          class="game-button"
+          type="button"
+          [class.game-button--locked]="!isUnlocked(game.id)"
+          [class.game-button--completed]="isCompleted(game.id)"
+          [disabled]="!isUnlocked(game.id)"
+          (click)="openGame(game)"
+          [attr.data-logo]="logoFor(game.id) ? true : null"
+          [style.--game-logo]="logoFor(game.id) ? 'url(' + logoFor(game.id) + ')' : null"
+          [style.--game-color]="colorFor(game.id) || null"
+        >
+        </button>
+        <div class="game-label">{{ game.title }}</div>
+      </div>
+    }
   </div>
 
-  <app-configurator-dialog
-    *ngIf="showConfigurator"
-    [config]="config"
-    [completedIds]="completedIds"
-    (save)="saveConfigurator($event)"
-    (cancel)="closeConfigurator()"
-    (resetAll)="resetGameAndConfig()"
-  ></app-configurator-dialog>
+  @if (showConfigurator) {
+    <app-configurator-dialog
+      [config]="config"
+      [completedIds]="completedIds"
+      (save)="saveConfigurator($event)"
+      (cancelled)="closeConfigurator()"
+      (resetAll)="resetGameAndConfig()"
+    ></app-configurator-dialog>
+  }
 </section>

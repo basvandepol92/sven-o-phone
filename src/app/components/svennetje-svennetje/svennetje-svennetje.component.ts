@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GameStateService } from '../../services/game-state.service';
@@ -22,6 +22,9 @@ interface Difficulty {
   styleUrls: ['./svennetje-svennetje.component.scss']
 })
 export class SvennetjeSvennetjeComponent implements OnInit, OnDestroy {
+  private readonly router = inject(Router);
+  private readonly gameState = inject(GameStateService);
+  private readonly configService = inject(GameConfigService);
   cups: Cup[] = [];
   positions: number[] = []; // positions[cupIndex] -> slot index
   slotPercents: number[] = [];
@@ -40,13 +43,6 @@ export class SvennetjeSvennetjeComponent implements OnInit, OnDestroy {
   private shuffleTimers: number[] = [];
   private revealTimer?: number;
   private nextRoundTimer?: number;
-
-  constructor(
-    private readonly router: Router,
-    private readonly host: ElementRef<HTMLElement>,
-    private readonly gameState: GameStateService,
-    private readonly configService: GameConfigService
-  ) {}
 
   ngOnInit(): void {
     this.refreshConfig();

@@ -4,7 +4,8 @@ import {
   ElementRef,
   HostListener,
   OnDestroy,
-  ViewChild
+  ViewChild,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -31,6 +32,10 @@ const HIGH_SCORE_KEY = 'svennieKruiptHighScore';
 })
 export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
+  private readonly router = inject(Router);
+  private readonly gameState = inject(GameStateService);
+  private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly configService = inject(GameConfigService);
 
   currentScore = 0;
   highScore = 0;
@@ -41,7 +46,6 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   // Game state flags
   private running = false;
   private rafId?: number;
-  private lastFrame = 0;
   private svenY = 0;
   private svenVelocity = 0;
   private gravity = 0.28;
@@ -56,21 +60,17 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   private canvasHeight = 420;
   private destroyed = false;
   private spawnGlow = false;
-  private svenImg: HTMLImageElement;
+  private readonly svenImg: HTMLImageElement = this.createSvenImage();
   private svenImgLoaded = false;
   private obstacleCount = 0;
 
-  constructor(
-    private readonly router: Router,
-    private readonly gameState: GameStateService,
-    private readonly host: ElementRef<HTMLElement>,
-    private readonly configService: GameConfigService
-  ) {
-    this.svenImg = new Image();
-    this.svenImg.src = 'assets/images/logo_sven.png';
-    this.svenImg.onload = () => {
+  private createSvenImage(): HTMLImageElement {
+    const img = new Image();
+    img.src = 'assets/images/logo_sven.png';
+    img.onload = () => {
       this.svenImgLoaded = true;
     };
+    return img;
   }
 
   ngAfterViewInit(): void {
@@ -148,7 +148,6 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
 
   private startGameLoop(): void {
     this.running = true;
-    this.lastFrame = performance.now();
     this.loop();
   }
 
@@ -164,17 +163,13 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const now = performance.now();
-    const delta = now - this.lastFrame;
-    this.lastFrame = now;
-
-    this.update(delta);
+    this.update();
     this.draw();
 
     this.rafId = requestAnimationFrame(this.loop);
   };
 
-  private update(delta: number): void {
+  private update(): void {
     const ctx = this.canvasRef.nativeElement.getContext('2d');
     if (!ctx) {
       return;

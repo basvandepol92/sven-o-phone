@@ -14,7 +14,7 @@ export class ConfiguratorDialogComponent implements OnChanges {
   @Input() config!: SvenGameConfig;
   @Input() completedIds: number[] = [];
   @Output() save = new EventEmitter<{ config: SvenGameConfig; completedIds: number[] }>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() cancelled = new EventEmitter<void>();
   @Output() resetAll = new EventEmitter<void>();
 
   workingCopy!: SvenGameConfig;
@@ -39,7 +39,7 @@ export class ConfiguratorDialogComponent implements OnChanges {
   }
 
   onCancel(): void {
-    this.cancel.emit();
+    this.cancelled.emit();
   }
 
   onResetAll(): void {

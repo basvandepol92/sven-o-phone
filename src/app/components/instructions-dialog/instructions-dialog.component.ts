@@ -10,5 +10,5 @@ import { CommonModule } from '@angular/common';
 })
 export class InstructionsDialogComponent {
   @Input() open = false;
-  @Output() close = new EventEmitter<void>();
+  @Output() closed = new EventEmitter<void>();
 }

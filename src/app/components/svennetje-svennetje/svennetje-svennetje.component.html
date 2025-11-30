@@ -6,53 +6,62 @@
 
   <div class="svennetje__board">
     <div class="cups">
-      <button
-        class="cup"
-        type="button"
-        *ngFor="let cup of cups; index as idx"
-        [style.left]="getSlotLeft(idx)"
-        [class.cup--shuffling]="isShuffling"
-        [class.cup--active]="canChoose"
-        (click)="handleCupSelection(idx)"
-      >
-        <span class="cup__lid"></span>
-        <span class="cup__body"></span>
-        <span class="cup__shadow"></span>
-        <img class="cup__peek-img" *ngIf="isSvenUnderCup(idx)" src="assets/images/logo_sven.png" alt="Sven" />
-      </button>
+      @for (cup of cups; track cup.id; let idx = $index) {
+        <button
+          class="cup"
+          type="button"
+          [style.left]="getSlotLeft(idx)"
+          [class.cup--shuffling]="isShuffling"
+          [class.cup--active]="canChoose"
+          (click)="handleCupSelection(idx)"
+        >
+          <span class="cup__lid"></span>
+          <span class="cup__body"></span>
+          <span class="cup__shadow"></span>
+          @if (isSvenUnderCup(idx)) {
+            <img class="cup__peek-img" src="assets/images/logo_sven.png" alt="Sven" />
+          }
+        </button>
+      }
     </div>
 
     <!-- Intro popup -->
-    <div class="overlay" *ngIf="showIntro">
-      <div class="dialog">
-        <h2 class="dialog__title">Svennetje svennetje</h2>
-        <p>
-          Pas op, Sven verstopt zich. Klik het juiste bedje aan waar Sven zich verstopt heeft. Wanneer je het
-          {{ requiredTarget }}x goed gedaan hebt mag je een cadeautje uitpakken.
-        </p>
-        <button class="btn btn--primary" type="button" (click)="startFromIntro()">Start</button>
-      </div>
-    </div>
-
-    <!-- Failure popup -->
-    <div class="overlay" *ngIf="showFailure">
-      <div class="dialog">
-        <h2>Helaas</h2>
-        <p>Je had {{ correctCount }}/{{ requiredTarget }} goed</p>
-        <div class="dialog__actions">
-          <button class="btn btn--primary" type="button" (click)="tryAgain()">probeer opnieuw</button>
-          <button class="btn btn--ghost" type="button" (click)="goBack()">ga terug</button>
+    @if (showIntro) {
+      <div class="overlay">
+        <div class="dialog">
+          <h2 class="dialog__title">Svennetje svennetje</h2>
+          <p>
+            Pas op, Sven verstopt zich. Klik het juiste bedje aan waar Sven zich verstopt heeft. Wanneer je het
+            {{ requiredTarget }}x goed gedaan hebt mag je een cadeautje uitpakken.
+          </p>
+          <button class="btn btn--primary" type="button" (click)="startFromIntro()">Start</button>
         </div>
       </div>
-    </div>
+    }
+
+    <!-- Failure popup -->
+    @if (showFailure) {
+      <div class="overlay">
+        <div class="dialog">
+          <h2>Helaas</h2>
+          <p>Je had {{ correctCount }}/{{ requiredTarget }} goed</p>
+          <div class="dialog__actions">
+            <button class="btn btn--primary" type="button" (click)="tryAgain()">probeer opnieuw</button>
+            <button class="btn btn--ghost" type="button" (click)="goBack()">ga terug</button>
+          </div>
+        </div>
+      </div>
+    }
 
     <!-- Success popup -->
-    <div class="overlay" *ngIf="showSuccess">
-      <div class="dialog">
-        <h2>Gefeliciteerd je krijgt een cadeautje</h2>
-        <p>Score: {{ requiredTarget }}/{{ requiredTarget }}</p>
-        <button class="btn btn--primary" type="button" (click)="goBack()">ga terug naar home</button>
+    @if (showSuccess) {
+      <div class="overlay">
+        <div class="dialog">
+          <h2>Gefeliciteerd je krijgt een cadeautje</h2>
+          <p>Score: {{ requiredTarget }}/{{ requiredTarget }}</p>
+          <button class="btn btn--primary" type="button" (click)="goBack()">ga terug naar home</button>
+        </div>
       </div>
-    </div>
+    }
   </div>
 </section>
