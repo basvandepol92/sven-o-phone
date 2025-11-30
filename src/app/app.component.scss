@@ -61,8 +61,9 @@
 .signal-bar {
   width: 6px;
   border-radius: 6px;
-  background: linear-gradient(180deg, #8be0c6, #47b09b);
-  box-shadow: 0 2px 4px rgba(71, 176, 155, 0.35);
+  background: linear-gradient(180deg, #e4e8ed, #c9d1dc);
+  opacity: 0.2;
+  transition: opacity 0.3s ease, background 0.3s ease;
 }
 
 .signal-bar:nth-child(1) {
@@ -75,6 +76,25 @@
 
 .signal-bar:nth-child(3) {
   height: 18px;
+}
+
+.signal-bar.active {
+  opacity: 1;
+}
+
+.monitor__signal[data-strength='1'] .signal-bar.active {
+  background: linear-gradient(180deg, #f7b1b1, #e76e6e);
+}
+
+.monitor__signal[data-strength='2'] .signal-bar:nth-child(-n + 2) {
+  opacity: 1;
+  background: linear-gradient(180deg, #ffc88b, #f39b43);
+}
+
+.monitor__signal[data-strength='3'] .signal-bar {
+  opacity: 1;
+  background: linear-gradient(180deg, #8be0c6, #47b09b);
+  box-shadow: 0 2px 4px rgba(71, 176, 155, 0.35);
 }
 
 .monitor__display {
@@ -167,6 +187,39 @@
 .footer-buttons {
   display: inline-flex;
   gap: 0.5rem;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 50, 90, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  z-index: 60;
+}
+
+.dialog {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.25rem 1.4rem;
+  max-width: 760px;
+  width: min(760px, 100%);
+  box-shadow: 0 16px 28px rgba(17, 68, 110, 0.22);
+  border: 1px solid #cde6ff;
+  color: #1c4f85;
+  text-align: center;
+}
+
+.dialog--video {
+  max-width: 760px;
+}
+
+.live-video {
+  width: 100%;
+  max-height: 70vh;
+  border-radius: 12px;
+  margin: 0.6rem 0 1rem;
 }
 
 .monitor__chip:hover {
