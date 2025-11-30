@@ -1,0 +1,60 @@
+<div class="overlay">
+  <div class="dialog">
+    <h2>Sven-o-phone configuratie</h2>
+
+    <div class="section">
+      <h3>Svennie kruipt</h3>
+      <label>
+        Minimum score voor Svennie kruipt
+        <input type="number" [(ngModel)]="workingCopy.svennieKruipt.minScoreToWin" min="1" />
+      </label>
+    </div>
+
+    <div class="section">
+      <h3>Svennetje svennetje</h3>
+      <label>
+        Score om te behalen bij Svennetje svennetje
+        <input type="number" [(ngModel)]="workingCopy.svennetjeSvennetje.requiredCorrectCount" min="1" />
+      </label>
+    </div>
+
+    <div class="section">
+      <h3>Hoe goed ken jij Sven?</h3>
+      <label>
+        Aantal juiste vragen om te behalen
+        <input type="number" [(ngModel)]="workingCopy.quiz.requiredCorrectAnswers" min="1" max="10" />
+      </label>
+      <label>
+        Aantal seconden per vraag
+        <input type="number" [(ngModel)]="workingCopy.quiz.secondsPerQuestion" min="1" />
+      </label>
+    </div>
+
+    <div class="section">
+      <h3>Mini-games status</h3>
+      <label class="checkbox">
+        <input type="checkbox" [checked]="workingCompleted.has(1)" (change)="toggleCompleted(1, $any($event.target).checked)" />
+        Spel 1 - Svennie kruipt
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" [checked]="workingCompleted.has(2)" (change)="toggleCompleted(2, $any($event.target).checked)" />
+        Spel 2 - Svennetje svennetje
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" [checked]="workingCompleted.has(3)" (change)="toggleCompleted(3, $any($event.target).checked)" />
+        Spel 3 - Hoe goed ken jij Sven?
+      </label>
+    </div>
+
+    <div class="section section--reset">
+      <button class="btn btn--ghost danger" type="button" (click)="onResetAll()">
+        Reset game (standaard waardes en voortgang)
+      </button>
+    </div>
+
+    <div class="dialog__actions">
+      <button class="btn btn--ghost" type="button" (click)="onCancel()">Annuleren</button>
+      <button class="btn btn--primary" type="button" (click)="onSave()">Opslaan</button>
+    </div>
+  </div>
+</div>

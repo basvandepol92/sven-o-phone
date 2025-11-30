@@ -1,0 +1,77 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 50, 90, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  z-index: 50;
+}
+
+.dialog {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.25rem 1.4rem;
+  max-width: 640px;
+  width: min(640px, 100%);
+  box-shadow: 0 16px 28px rgba(17, 68, 110, 0.22);
+  border: 1px solid #cde6ff;
+  color: #1c4f85;
+}
+
+.dialog h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+}
+
+.section {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e0e9f5;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.section:last-of-type {
+  border-bottom: none;
+}
+
+.section h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #0f3e6a;
+}
+
+label {
+  display: grid;
+  gap: 0.2rem;
+  font-weight: 700;
+}
+
+label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+
+input[type='number'] {
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid #cfe1f7;
+  background: #f6fbff;
+  font: inherit;
+  color: #1c4f85;
+}
+
+.dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding-top: 0.75rem;
+}
+
+.btn.danger {
+  border: 1px solid #f0b3c5;
+  color: #a03e57;
+  background: #fbe4eb;
+}

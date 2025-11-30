@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GameStateService } from '../../services/game-state.service';
+import { GameConfigService } from '../../services/game-config.service';
 
 interface Obstacle {
   x: number;
@@ -34,7 +35,7 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   highScore = 0;
   showIntro = true; // Instruction popup before game starts.
   showGameOver = false; // Game over popup visibility.
-  targetScore = 2;
+  targetScore = 10;
 
   // Game state flags
   private running = false;
@@ -60,7 +61,8 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly gameState: GameStateService,
-    private readonly host: ElementRef<HTMLElement>
+    private readonly host: ElementRef<HTMLElement>,
+    private readonly configService: GameConfigService
   ) {
     this.svenImg = new Image();
     this.svenImg.src = 'assets/images/logo_sven.png';
@@ -70,6 +72,7 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    this.refreshTargetScore();
     this.loadHighScore();
     this.resizeCanvas();
     this.resetGame();
@@ -105,6 +108,7 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   }
 
   startFromIntro(): void {
+    this.refreshTargetScore();
     this.showIntro = false;
     this.showGameOver = false;
     this.resetGame();
@@ -339,5 +343,10 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed = true;
     this.stopGameLoop();
+  }
+
+  private refreshTargetScore(): void {
+    const cfg = this.configService.getConfig();
+    this.targetScore = Math.max(1, cfg.svennieKruipt.minScoreToWin);
   }
 }

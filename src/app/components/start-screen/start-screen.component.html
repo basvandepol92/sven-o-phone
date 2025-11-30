@@ -4,7 +4,7 @@
       <a class="back-btn" routerLink="/">← Terug</a>
     </div>
 
-       <div class="sleep">
+       <div class="sleep" (click)="handleSleepClick()">
         <span class="sleep__dot"></span>
         <div class="sleep__text">
           <span class="sleep__label">Slaap status</span>
@@ -44,4 +44,13 @@
       <div class="game-label">{{ game.title }}</div>
     </div>
   </div>
+
+  <app-configurator-dialog
+    *ngIf="showConfigurator"
+    [config]="config"
+    [completedIds]="completedIds"
+    (save)="saveConfigurator($event)"
+    (cancel)="closeConfigurator()"
+    (resetAll)="resetGameAndConfig()"
+  ></app-configurator-dialog>
 </section>

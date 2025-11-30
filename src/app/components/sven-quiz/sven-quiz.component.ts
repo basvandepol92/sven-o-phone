@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GameStateService } from '../../services/game-state.service';
+import { GameConfigService } from '../../services/game-config.service';
 
 interface QuizQuestion {
   id: number;
@@ -84,7 +85,7 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
   questions = QUIZ_QUESTIONS;
   currentQuestionIndex = 0;
   lives = 3;
-  timeLeft = 10;
+  timeLeft = 0;
   timerId?: number;
   showIntro = true;
   showFailure = false;
@@ -93,14 +94,23 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
   canAnswer = false;
   showFeedback = false;
   lastAnswerCorrect = false;
+  requiredCorrectAnswers = 0;
+  secondsPerQuestion = 0;
 
-  constructor(private readonly router: Router, private readonly gameState: GameStateService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly gameState: GameStateService,
+    private readonly configService: GameConfigService
+  ) {}
 
   ngOnInit(): void {
+    this.applyConfig();
+    this.timeLeft = this.secondsPerQuestion;
     // Intro shows by default; game starts after Start button.
   }
 
   startGame(): void {
+    this.applyConfig();
     this.resetGame();
     this.showIntro = false;
     this.startQuestion();
@@ -110,7 +120,7 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
     this.clearTimer();
     this.currentQuestionIndex = 0;
     this.lives = 3;
-    this.timeLeft = 10;
+    this.timeLeft = this.secondsPerQuestion;
     this.showFailure = false;
     this.showSuccess = false;
     this.answeredCorrect = 0;
@@ -121,7 +131,7 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
 
   startQuestion(): void {
     this.clearTimer();
-    this.timeLeft = 10;
+    this.timeLeft = this.secondsPerQuestion;
     this.canAnswer = true;
     this.showFeedback = false;
     this.timerId = window.setInterval(() => {
@@ -189,7 +199,7 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
   }
 
   get progressLabel(): string {
-    return `Vraag ${this.currentQuestionIndex + 1}/10`;
+    return `Vraag ${this.currentQuestionIndex + 1}/${this.questions.length}`;
   }
 
   get currentQuestion(): QuizQuestion {
@@ -209,7 +219,7 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
     }
 
     if (isLast) {
-      if (this.lastAnswerCorrect && this.answeredCorrect === this.questions.length) {
+      if (this.answeredCorrect >= this.requiredCorrectAnswers) {
         this.handleWin();
       } else {
         this.handleFailure();
@@ -230,5 +240,11 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clearTimer();
+  }
+
+  private applyConfig(): void {
+    const cfg = this.configService.getConfig();
+    this.requiredCorrectAnswers = Math.max(1, Math.min(this.questions.length, cfg.quiz.requiredCorrectAnswers));
+    this.secondsPerQuestion = Math.max(1, cfg.quiz.secondsPerQuestion);
   }
 }

@@ -1,7 +1,7 @@
 <section class="svennetje">
   <div class="svennetje__top game-ui">
     <a class="back-btn" routerLink="/start" (click)="goBack()">Terug</a>
-    <div class="scoreboard">Punten: {{ correctCount }}/5</div>
+    <div class="scoreboard">Punten: {{ correctCount }}/{{ requiredTarget }}</div>
   </div>
 
   <div class="svennetje__board">
@@ -27,8 +27,8 @@
       <div class="dialog">
         <h2 class="dialog__title">Svennetje svennetje</h2>
         <p>
-          Pas op, Sven verstopt zich. Klik het juiste bedje aan waar Sven zich verstopt heeft. Wanneer je het 5x goed gedaan hebt
-          mag je een cadeautje uitpakken.
+          Pas op, Sven verstopt zich. Klik het juiste bedje aan waar Sven zich verstopt heeft. Wanneer je het
+          {{ requiredTarget }}x goed gedaan hebt mag je een cadeautje uitpakken.
         </p>
         <button class="btn btn--primary" type="button" (click)="startFromIntro()">Start</button>
       </div>
@@ -38,7 +38,7 @@
     <div class="overlay" *ngIf="showFailure">
       <div class="dialog">
         <h2>Helaas</h2>
-        <p>Je had {{ correctCount }}/5 goed</p>
+        <p>Je had {{ correctCount }}/{{ requiredTarget }} goed</p>
         <div class="dialog__actions">
           <button class="btn btn--primary" type="button" (click)="tryAgain()">probeer opnieuw</button>
           <button class="btn btn--ghost" type="button" (click)="goBack()">ga terug</button>
@@ -50,7 +50,7 @@
     <div class="overlay" *ngIf="showSuccess">
       <div class="dialog">
         <h2>Gefeliciteerd je krijgt een cadeautje</h2>
-        <p>Score: 5/5</p>
+        <p>Score: {{ requiredTarget }}/{{ requiredTarget }}</p>
         <button class="btn btn--primary" type="button" (click)="goBack()">ga terug naar home</button>
       </div>
     </div>
