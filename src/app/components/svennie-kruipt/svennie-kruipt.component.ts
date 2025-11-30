@@ -328,7 +328,10 @@ export class SvennieKruiptComponent implements AfterViewInit, OnDestroy {
     }
     const hostWidth = this.host.nativeElement.getBoundingClientRect().width;
     this.canvasWidth = Math.min(Math.max(hostWidth - 32, 480), 960);
-    this.canvasHeight = Math.round(this.canvasWidth * 0.7);
+    const baseHeight = Math.round(this.canvasWidth * 0.7);
+    const viewportCap = Math.max(window.innerHeight - 240, 320);
+    const maxHeight = Math.min(440, viewportCap);
+    this.canvasHeight = Math.max(320, Math.min(baseHeight, maxHeight));
     canvas.width = this.canvasWidth;
     canvas.height = this.canvasHeight;
   }
