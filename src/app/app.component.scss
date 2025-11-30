@@ -164,6 +164,11 @@
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
+.footer-buttons {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
 .monitor__chip:hover {
   transform: translateY(-1px);
   box-shadow: 0 12px 20px rgba(21, 86, 142, 0.16);

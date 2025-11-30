@@ -23,7 +23,17 @@
             <span class="eq-bar" *ngFor="let bar of eqBars" [style.--i]="bar" [class.eq-bar--active]="speakerPulse"></span>
           </div>
         </div>
-        <button class="monitor__chip" type="button" (click)="triggerPulse()">Live meeluisteren</button>
+        <div class="footer-buttons">
+          <button class="monitor__chip" type="button" (click)="triggerPulse()">Live meeluisteren</button>
+          <button
+            class="monitor__chip"
+            type="button"
+            (click)="toggleMusic()"
+            [attr.aria-label]="soundtrack.isPlaying() ? 'Muziek pauzeren' : 'Muziek hervatten'"
+          >
+            {{ musicIcon() }}
+          </button>
+        </div>
       </footer>
     </div>
   </div>
