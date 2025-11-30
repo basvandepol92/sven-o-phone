@@ -13,62 +13,62 @@ interface QuizQuestion {
 const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     id: 1,
-    question: 'Wat is Sven zijn favoriete knuffel?',
-    answers: ['Beer', 'Olifant', 'Dinosaurus', 'Konijn'],
+    question: 'Wat is Sven zijn favoriete dier?',
+    answers: ['Wasbeer', 'Olifant', 'Dinosaurus', 'Konijn'],
     correctIndex: 0
   },
   {
     id: 2,
-    question: 'Welke kleur pyjama draagt Sven het liefst?',
-    answers: ['Blauw', 'Geel', 'Groen', 'Roze'],
-    correctIndex: 0
+    question: 'Naar welke piet keek Sven heel verliefd op de foto op scouting?',
+    answers: ['Pietje plezier', 'Hoofd piet', 'Stuiter Piet', 'Pietje paniek'],
+    correctIndex: 2
   },
   {
     id: 3,
-    question: 'Wat is Sven zijn favoriete liedje om op te slapen?',
-    answers: ['Twinkle Twinkle', 'Slaap kindje slaap', 'Vlinder', 'Baby shark'],
-    correctIndex: 1
-  },
-  {
-    id: 4,
-    question: 'Welk drankje vindt Sven het lekkerst?',
-    answers: ['Melk', 'Water', 'Sap', 'Chocomelk'],
-    correctIndex: 0
-  },
-  {
-    id: 5,
-    question: 'Hoe zegt Sven hallo?',
-    answers: ['Handje', 'Knuffel', 'High five', 'Kus'],
-    correctIndex: 2
-  },
-  {
-    id: 6,
-    question: 'Wat is Sven zijn favoriete dierengeluid?',
-    answers: ['Boe', 'Miauw', 'Oink', 'Woef'],
+    question: 'Wat is Sven zijn favoriete voetbalclub?',
+    answers: ['Ajax', 'PSV', 'Feyenoord', 'FC Utrecht'],
     correctIndex: 3
   },
   {
-    id: 7,
-    question: 'Waar slaapt Sven het liefst?',
-    answers: ['Wiegbak', 'Ouders bed', 'Bank', 'Autostoel'],
-    correctIndex: 0
+    id: 4,
+    question: 'Wat wil Sven later worden?',
+    answers: ['Brandweerman', 'IT-er', 'Burgemeester', 'Kok'],
+    correctIndex: 1
   },
   {
-    id: 8,
-    question: 'Hoeveel tandjes heeft Sven?',
-    answers: ['0', '2', '4', '6'],
+    id: 5,
+    question: 'Wat is de tekening meest rechtsbovenin, naast de lichtknop, bij Opa&Oma op de slaapkamer',
+    answers: ['Muis', 'Baby', 'Aapje', 'Vis'],
+    correctIndex: 3
+  },
+  {
+    id: 6,
+    question: 'Welke geluidjes maakt Sven het liefste?',
+    answers: ['Scheetjes', 'Huilen', 'Lachen', 'Pruttels'],
     correctIndex: 2
   },
   {
-    id: 9,
-    question: 'Wat is Sven zijn favoriete tijd van de dag?',
-    answers: ['Ochtend', 'Middag', 'Avond', 'Nacht'],
+    id: 7,
+    question: 'Wie is Sven zijn grote voorbeeld?',
+    answers: ['Superman', 'Spiderman', 'Ome Bas', 'Batman'],
+    correctIndex: 2
+  },
+  {
+    id: 8,
+    question: 'Wat doet Sven het liefste met papa?',
+    answers: ['FC Utrecht kijken', 'Luiers verwisselen', 'Verstoppertje', 'Slapen'],
     correctIndex: 0
   },
   {
+    id: 9,
+    question: 'Hoelaat is Sven geboren?',
+    answers: ['04.15u', '04.16u', '04.17u', '04.18u'],
+    correctIndex: 3
+  },
+  {
     id: 10,
-    question: 'Welke kleur speentje vindt Sven fijn?',
-    answers: ['Blauw', 'Groen', 'Wit', 'Paars'],
+    question: 'Hoe zwaar woog Sven bij geboorte?',
+    answers: ['4305 gram', '3405 gram', '3404 gram', '4304 gram'],
     correctIndex: 1
   }
 ];
