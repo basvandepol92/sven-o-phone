@@ -14,6 +14,11 @@ const MINI_GAMES: MiniGame[] = [
 
 const STORAGE_KEY = 'svenophone-progress';
 const HIGH_SCORE_KEY = 'svennieKruiptHighScore';
+interface PersistedProgress {
+  completed?: number[];
+  shouldShowSplashAfterGame3?: boolean;
+  hasShownSplashAfterGame3?: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +26,8 @@ const HIGH_SCORE_KEY = 'svennieKruiptHighScore';
 export class GameStateService {
   readonly miniGames = MINI_GAMES;
   private completed = new Set<number>();
+  private shouldShowSplashAfterGame3Flag = false;
+  private hasShownSplashAfterGame3Flag = false;
 
   constructor() {
     this.loadState();
@@ -58,6 +65,8 @@ export class GameStateService {
 
   resetProgress(): void {
     this.completed.clear();
+    this.shouldShowSplashAfterGame3Flag = false;
+    this.hasShownSplashAfterGame3Flag = false;
     // Persist cleared progress
     this.saveState();
     // Clear highscore or other per-game stored data.
@@ -66,13 +75,36 @@ export class GameStateService {
     }
   }
 
+  setShouldShowSplashAfterGame3(shouldShow: boolean): void {
+    this.shouldShowSplashAfterGame3Flag = shouldShow;
+    this.saveState();
+  }
+
+  shouldShowSplashAfterGame3(): boolean {
+    return this.shouldShowSplashAfterGame3Flag;
+  }
+
+  hasShownSplashAfterGame3(): boolean {
+    return this.hasShownSplashAfterGame3Flag;
+  }
+
+  markSplashShown(): void {
+    this.hasShownSplashAfterGame3Flag = true;
+    this.shouldShowSplashAfterGame3Flag = false;
+    this.saveState();
+  }
+
   private saveState(): void {
     if (typeof localStorage === 'undefined') {
       return;
     }
 
     try {
-      const payload = JSON.stringify({ completed: Array.from(this.completed) });
+      const payload = JSON.stringify({
+        completed: Array.from(this.completed),
+        shouldShowSplashAfterGame3: this.shouldShowSplashAfterGame3Flag,
+        hasShownSplashAfterGame3: this.hasShownSplashAfterGame3Flag
+      });
       localStorage.setItem(STORAGE_KEY, payload);
     } catch (err) {
       // Best effort persistence; ignore storage errors.
@@ -91,8 +123,10 @@ export class GameStateService {
         return;
       }
 
-      const parsed = JSON.parse(raw) as { completed?: number[] };
+      const parsed = JSON.parse(raw) as PersistedProgress;
       (parsed.completed ?? []).forEach((id) => this.completed.add(id));
+      this.shouldShowSplashAfterGame3Flag = Boolean(parsed.shouldShowSplashAfterGame3);
+      this.hasShownSplashAfterGame3Flag = Boolean(parsed.hasShownSplashAfterGame3);
     } catch {
       // Ignore malformed persisted data.
     }

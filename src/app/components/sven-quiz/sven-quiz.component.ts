@@ -192,6 +192,9 @@ export class SvenQuizComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.clearTimer();
+    if (this.showSuccess) {
+      this.gameState.setShouldShowSplashAfterGame3(true);
+    }
     this.router.navigateByUrl('/start');
   }
 

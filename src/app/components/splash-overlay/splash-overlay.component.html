@@ -1,0 +1,33 @@
+<div class="splash-overlay">
+  <div
+    class="splash-overlay__backdrop"
+    role="button"
+    tabindex="0"
+    (click)="close()"
+    (keydown.enter)="close()"
+    (keydown.space)="close()"
+    aria-label="Sluit splash"
+  ></div>
+  <div class="splash-overlay__confetti" aria-hidden="true">
+    @for (piece of confettiPieces; track piece.id) {
+      <span
+        class="confetti-piece"
+        [style.left]="piece.left + '%'"
+        [style.width.px]="piece.size"
+        [style.height.px]="piece.size * 0.45"
+        [style.background]="piece.color"
+        [style.--fall-duration]="piece.fallDuration + 's'"
+        [style.--delay]="piece.delay + 's'"
+        [style.--drift]="piece.drift + 'px'"
+        [style.--start-rotation]="piece.startRotation + 'deg'"
+        [style.--end-rotation]="piece.endRotation + 'deg'"
+      ></span>
+    }
+  </div>
+  <div class="splash-overlay__content">
+    <button class="splash-overlay__close" type="button" (click)="close()" aria-label="Sluiten">
+      X
+    </button>
+    <img class="splash-overlay__image" src="assets/images/splash.png" alt="Gefeliciteerd splash" />
+  </div>
+</div>
