@@ -32,6 +32,7 @@ Angular 17 app met een startscherm, drie mini-games en een feestelijke splash ov
 - **Splash overlay**: verschijnt automatisch na het behalen van game 3 als hij nog niet eerder is getoond. Markering gebeurt in `GameStateService` zodat de splash éénmalig verschijnt.
 - **Confetti**: loopt zolang de splash zichtbaar is. Sluiten kan via de X-knop of via de backdrop (klik/Enter/Spatie). Output-event `closed` laat de ouder (start-screen) de overlay verbergen.
 - **Toegankelijkheid**: interacties op de backdrop zijn focusable en reageren op Enter/Spatie; sluitknop heeft aria-label.
+- **PWA / iPad standalone**: manifest + service worker (prod), iOS web-app meta-tags, portrait lock, en PWA-hint op het startscherm wanneer niet standalone. Icons beschikbaar in `src/assets/icons/`.
 
 ## State & configuratie
 - **GameStateService**: regelt unlock status, completed status en flags voor de splash (pending/shown). Wordt gebruikt om de overlay te tonen of te verbergen.

@@ -4,6 +4,7 @@ import { GameStateService } from '../../services/game-state.service';
 import { GameConfigService } from '../../services/game-config.service';
 import { provideRouter } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { PwaService } from '../../services/pwa.service';
 
 class GameStateStub {
   miniGames = [
@@ -34,6 +35,10 @@ class GameConfigStub {
     .and.callFake(() => this.cfg);
 }
 
+class PwaServiceStub {
+  isStandalone = jasmine.createSpy('isStandalone').and.returnValue(true);
+}
+
 describe('StartScreenComponent', () => {
   let component: StartScreenComponent;
   let fixture: ComponentFixture<StartScreenComponent>;
@@ -46,6 +51,7 @@ describe('StartScreenComponent', () => {
       providers: [
         { provide: GameStateService, useValue: gameState },
         { provide: GameConfigService, useClass: GameConfigStub },
+        { provide: PwaService, useClass: PwaServiceStub },
         provideRouter([])
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -134,5 +140,11 @@ describe('StartScreenComponent', () => {
     fixture.detectChanges();
     component.resetGameAndConfig();
     expect(gameState.resetProgress).toHaveBeenCalled();
+  });
+
+  it('should still render game grid without PWA hint', () => {
+    fixture.detectChanges();
+    const header = fixture.nativeElement.querySelector('.start__header');
+    expect(header.textContent).toContain('Kies, speel en verdien');
   });
 });
