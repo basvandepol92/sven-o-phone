@@ -18,11 +18,19 @@ body {
   background: var(--bg);
   color: var(--blue-700);
   min-height: 100vh;
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: env(safe-area-inset-top);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+html,
+body,
+app-root {
+  height: 100%;
 }
 
 button {
