@@ -60,4 +60,8 @@
       (resetAll)="resetGameAndConfig()"
     ></app-configurator-dialog>
   }
+
+  @if (showSplash) {
+    <app-splash-overlay (closed)="closeSplash()"></app-splash-overlay>
+  }
 </section>

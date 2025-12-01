@@ -1,0 +1,93 @@
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 2.2rem);
+  z-index: 10;
+}
+
+.splash-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(15, 62, 106, 0.6), rgba(31, 171, 137, 0.55));
+  backdrop-filter: blur(6px);
+  z-index: 0;
+}
+
+.splash-overlay__confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -12%;
+  border-radius: 3px;
+  opacity: 0.9;
+  will-change: transform;
+  animation:
+    confetti-fall var(--fall-duration, 7s) linear infinite;
+  animation-delay: calc(var(--delay, 0s) * -1);
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(var(--start-rotation, 0deg));
+  }
+  55% {
+    transform: translate3d(calc(var(--drift, 0px) * 0.55), 55vh, 0) rotate(calc(var(--start-rotation, 0deg) + 200deg));
+  }
+  100% {
+    transform: translate3d(var(--drift, 0px), 110vh, 0) rotate(var(--end-rotation, 360deg));
+  }
+}
+
+.splash-overlay__content {
+  position: relative;
+  max-width: min(960px, 88vw);
+  max-height: min(90vh, 640px);
+  width: min(960px, 92vw);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 42, 83, 0.35);
+  background: #f7fbff;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-overlay__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.7), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.7), transparent 40%),
+    linear-gradient(145deg, #e6f5ff, #e9fff7);
+}
+
+.splash-overlay__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f3e6a;
+  font-weight: 900;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 1rem;
+  padding: 0;
+  box-shadow: 0 8px 24px rgba(15, 62, 106, 0.16);
+  cursor: pointer;
+  z-index: 3;
+}

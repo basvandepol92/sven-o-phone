@@ -2,11 +2,12 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { SvenQuizComponent } from './sven-quiz.component';
 import { GameStateService } from '../../services/game-state.service';
 import { GameConfigService } from '../../services/game-config.service';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 class GameStateStub {
   markGameCompleted = jasmine.createSpy('markGameCompleted');
+  setShouldShowSplashAfterGame3 = jasmine.createSpy('setShouldShowSplashAfterGame3');
 }
 
 class GameConfigStub {
@@ -21,6 +22,7 @@ describe('SvenQuizComponent', () => {
   let component: SvenQuizComponent;
   let fixture: ComponentFixture<SvenQuizComponent>;
   let gameState: GameStateStub;
+  let routerNavigateSpy: jasmine.Spy;
 
   beforeEach(async () => {
     gameState = new GameStateStub();
@@ -36,6 +38,8 @@ describe('SvenQuizComponent', () => {
 
     fixture = TestBed.createComponent(SvenQuizComponent);
     component = fixture.componentInstance;
+    const router = TestBed.inject(Router);
+    routerNavigateSpy = spyOn(router, 'navigateByUrl');
     fixture.detectChanges();
   });
 
@@ -65,4 +69,18 @@ describe('SvenQuizComponent', () => {
     component.handleTimeout();
     expect(component.showFailure).toBeTrue();
   }));
+
+  it('should request splash when leaving after success', () => {
+    component.showSuccess = true;
+    component.goBack();
+    expect(gameState.setShouldShowSplashAfterGame3).toHaveBeenCalledWith(true);
+    expect(routerNavigateSpy).toHaveBeenCalledWith('/start');
+  });
+
+  it('should not request splash when leaving without success', () => {
+    component.showSuccess = false;
+    component.goBack();
+    expect(gameState.setShouldShowSplashAfterGame3).not.toHaveBeenCalled();
+    expect(routerNavigateSpy).toHaveBeenCalledWith('/start');
+  });
 });

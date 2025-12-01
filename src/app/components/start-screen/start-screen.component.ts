@@ -1,18 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { GameStateService, MiniGame } from '../../services/game-state.service';
 import { GameConfigService, SvenGameConfig } from '../../services/game-config.service';
 import { ConfiguratorDialogComponent } from '../configurator-dialog/configurator-dialog.component';
+import { SplashOverlayComponent } from '../splash-overlay/splash-overlay.component';
 
 @Component({
   selector: 'app-start-screen',
   standalone: true,
-  imports: [CommonModule, RouterModule, ConfiguratorDialogComponent],
+  imports: [CommonModule, RouterModule, ConfiguratorDialogComponent, SplashOverlayComponent],
   templateUrl: './start-screen.component.html',
   styleUrls: ['./start-screen.component.scss']
 })
-export class StartScreenComponent {
+export class StartScreenComponent implements OnInit {
   private readonly gameState = inject(GameStateService);
   private readonly configService = inject(GameConfigService);
   private readonly router = inject(Router);
@@ -30,8 +31,13 @@ export class StartScreenComponent {
   showConfigurator = false;
   config: SvenGameConfig = this.configService.getConfig();
   completedIds = this.gameState.getCompletedIds();
+  showSplash = false;
   private sleepClickCount = 0;
   private lastSleepClick = 0;
+
+  ngOnInit(): void {
+    this.evaluateSplashState();
+  }
 
   isUnlocked(gameId: number): boolean {
     return this.gameState.isGameUnlocked(gameId);
@@ -96,5 +102,16 @@ export class StartScreenComponent {
     this.gameState.resetProgress();
     this.completedIds = this.gameState.getCompletedIds();
     this.showConfigurator = false;
+  }
+
+  closeSplash(): void {
+    this.showSplash = false;
+  }
+
+  private evaluateSplashState(): void {
+    if (this.gameState.shouldShowSplashAfterGame3() && !this.gameState.hasShownSplashAfterGame3()) {
+      this.showSplash = true;
+      this.gameState.markSplashShown();
+    }
   }
 }
