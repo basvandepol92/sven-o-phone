@@ -1,8 +1,8 @@
 {
   "name": "Sven-o-phone",
   "short_name": "Sven-o-phone",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/sven-o-phone/",
+  "scope": "/sven-o-phone/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0f3e6a",
