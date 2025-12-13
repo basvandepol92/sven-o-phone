@@ -18,8 +18,7 @@ body {
   background: var(--bg);
   color: var(--blue-700);
   min-height: 100vh;
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-top: env(safe-area-inset-top);
+  padding: 0;
 }
 
 a {

@@ -1,7 +1,7 @@
 {
   "name": "Sven-o-phone",
   "short_name": "Sven-o-phone",
-  "start_url": "./",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
